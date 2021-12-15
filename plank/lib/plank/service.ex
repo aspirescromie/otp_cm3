@@ -1,10 +1,6 @@
 defmodule Plank.Service do
   alias Plank.Core
 
-  def start(string) do
-    initial_counter = Core.new(string)
-    spawn(fn -> loop(initial_counter))
-  end
 
   def loop(counter) do
     counter
@@ -23,4 +19,24 @@ defmodule Plank.Service do
         counter
     end
   end
+
+  ## Client API below this line
+
+  def start(string) do
+    initial_counter = Core.new(string)
+    spawn(fn -> loop(initial_counter) end)
+  end
+
+  def inc(counter_pid) do
+    send(counter_pid, :inc)
+    :ok
+  end
+
+  def count(counter_pid) do
+    send(counter_pid, {:count, self()})
+    receive do
+      message -> message
+    end
+  end
+
 end
