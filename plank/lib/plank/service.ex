@@ -1,6 +1,11 @@
 defmodule Plank.Service do
   alias Plank.Core
 
+  def start(string) do
+    initial_counter = Core.new(string)
+    spawn(fn -> loop(initial_counter))
+  end
+
   def loop(counter) do
     counter
     |> listen()
