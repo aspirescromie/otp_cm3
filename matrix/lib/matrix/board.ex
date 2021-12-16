@@ -17,6 +17,9 @@ defmodule Matrix.Board do
   ## Converter: return a message to user (right or wrong?)
 
   def result() do
+    #
+
+
 
   end
 
