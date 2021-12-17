@@ -11,13 +11,21 @@ defmodule Matrix.Server do
     {:ok, Board.new(answer)}
   end
 
-  def handle_call(:render, _from, board) do
-    # calculate new board
-    {:reply, Board.show(board), board}
+  def handle_call({:guess, turn}, _from, board) do
+    new_board = Board.guess(board, turn)
+    {:reply, Board.show(new_board), new_board}
   end
 
-  #State is ALWAYS the last parameter
-  def handle_cast({:guess, turn}, board) do
-    {:noreply, Board.guess(board, turn)}
+  def start_link(maybe_answer \\ nil) do
+    GenServer.start_link(__MODULE__, maybe_answer, name: __MODULE__)
   end
+
+  def guess(server \\ __MODULE__, turn) do
+    server
+    |> GenServer.call({:guess, turn})
+    |> IO.puts()
+
+  end
+
+
 end
