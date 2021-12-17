@@ -1,17 +1,23 @@
 defmodule Matrix.Server do
   use GenServer
-  alias Matrix.Server
+  alias Matrix.Board
 
-  def init(answer) do
-    {:ok, :unimplemented}
+
+
+  def init(maybe_answer) do
+    answer =
+      maybe_answer ||
+      (1..8 |> Enum.shuffle() |> Enum.take(4))
+    {:ok, Board.new(answer)}
   end
 
   def handle_call(:render, _from, board) do
     # calculate new board
-    {:reply, :value_for_client, :value_for_server}
+    {:reply, Board.show(board), board}
   end
 
-  def handle_cast(:guess, board) do
-    {:noreply, :value_for_server}
+  #State is ALWAYS the last parameter
+  def handle_cast({:guess, turn}, board) do
+    {:noreply, Board.guess(board, turn)}
   end
 end
