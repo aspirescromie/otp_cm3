@@ -1,6 +1,6 @@
 defmodule Plank.Server do
-  alias Plank.Core
   use GenServer
+  alias Plank.Core
 
   # Callbacks
   # init state
