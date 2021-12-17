@@ -4,12 +4,18 @@ defmodule Matrix.Application do
   @moduledoc false
 
   use Application
+  alias Matrix.Server
 
   @impl true
   def start(_type, _args) do
+    IO.puts("Starting Application")
+
     children = [
       # Starts a worker by calling: Matrix.Worker.start_link(arg)
-      {Matrix.Server, nil}
+      Server.child_spec(:ethan),
+      Server.child_spec(:steve),
+      Server.child_spec(:paul),
+      Server.child_spec(:joel)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
